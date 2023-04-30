@@ -2705,6 +2705,14 @@ module.exports = wait;
 
 /***/ }),
 
+/***/ 716:
+/***/ ((module) => {
+
+module.exports = eval("require")("@actions/github");
+
+
+/***/ }),
+
 /***/ 491:
 /***/ ((module) => {
 
@@ -2836,6 +2844,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(186);
 const wait = __nccwpck_require__(258);
+const github = __nccwpck_require__(716);
 
 
 // most @actions toolkit packages have async methods
@@ -2847,7 +2856,10 @@ async function run() {
     core.debug((new Date()).toTimeString()); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
     await wait(parseInt(ms));
     core.info((new Date()).toTimeString());
-
+    // Get the JSON webhook payload for the event that triggered the workflow
+    const payload = JSON.stringify(github.context.payload, undefined, 2)
+    console.log(`The event payload: ${payload}`);
+    
     core.setOutput('time', new Date().toTimeString());
   } catch (error) {
     core.setFailed(error.message);
